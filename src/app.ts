@@ -3,6 +3,8 @@ import { appRoutes } from "./http/routes";
 import { ZodError } from "zod";
 import { env } from "./env";
 
+// teste
+
 export const app = fastify()
 
 app.register(appRoutes)
