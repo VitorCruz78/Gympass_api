@@ -1,6 +1,4 @@
 import { CheckIn } from "@prisma/client";
-import { InvalidCredentialsError } from "./errors/invalid-credentials-error";
-import { compare } from "bcryptjs";
 import { CheckInsRepository } from "@/repositories/check-ins-repository";
 
 interface CheckinUseCaseRequest {
@@ -18,6 +16,14 @@ export class CheckinUseCase {
     ){}
 
     async execute({ userId, gymId }: CheckinUseCaseRequest): Promise<CheckinUseCaseResponse> {
+        const checkInOnSameDay = await this.checkinsRepository.findByUserIdOnDate(
+            userId,
+            new Date()
+        )
+
+        if (checkInOnSameDay) {
+            throw new Error()
+        }
 
         const checkIn = await this.checkinsRepository.create({
            gym_id: gymId,
